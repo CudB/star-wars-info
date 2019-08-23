@@ -2,14 +2,12 @@ import axios from 'axios';
 
 export default async function getDataFromSWAPI(endpoint, id = null) {
   try {
+    const api = 'https://swapi.co/api/';
     let response = null;
-    if (id !== null) {
-      response = await axios.get(`https://swapi.co/api/${endpoint}/${id}`);
-      return await response.data;
-    } else {
-      response = await axios.get(`https://swapi.co/api/${endpoint}`);
-      return await response.data;
-    }
+    let url = `${api}${endpoint}`;
+    if (id !== null) url += `/${id}`;
+    response = await axios.get(url);
+    return await response.data;
   } catch (err) {
     console.log(err);
     return null;

@@ -19,9 +19,9 @@ class Index extends React.Component {
     const { data } = this.props;
     if (data !== null) {
       return (
-        <BaseLayout className="cover">
+        <BaseLayout>
           <BasePage>
-            <LinkedSubDetailLayout alias="Film List" endpoint="film" data={data} />
+            <LinkedSubDetailLayout className="film-list" alias="Film List" endpoint="film" data={data} />
           </BasePage>
         </BaseLayout>
       )

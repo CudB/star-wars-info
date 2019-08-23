@@ -26,7 +26,6 @@ class LinkedSubDetailLayout extends React.Component {
             </Link>
           </li>
         )
-
       })
     }
     return null;

@@ -5,18 +5,12 @@ class SubDetailLayout extends React.Component {
   // Render a sub-detail element.
   render() {
     const { alias, data } = this.props;
-    if (data && data !== null) {
-      return (
-        <div className="sub-detail">
-          <h4>{alias}</h4>
-          <p> {data} </p>
-        </div>
-      )
-    }
+    let text = 'n/a';
+    if (data !== null) text = data;
     return (
       <div className="sub-detail">
         <h4>{alias}</h4>
-        <p>n/a</p>
+        <p>{text}</p>
       </div>
     )
   }
