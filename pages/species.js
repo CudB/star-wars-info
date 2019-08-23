@@ -8,11 +8,11 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
 
-class Character extends React.Component {
+class Species extends React.Component {
 
   // GET request to swapi.co for data.
   static async getInitialProps({ query }) {
-    let data = await getDataFromSWAPI('people', query.id);
+    let data = await getDataFromSWAPI('species', query.id);
     return { data };
   }
 
@@ -24,19 +24,17 @@ class Character extends React.Component {
         <BaseLayout>
           <BasePage>
             <div className="sub-details">
-              <SubDetailLayout alias="Character Name" data={data.name} />
-              <SubDetailLayout alias="Height" data={String(data.height)} />
-              <SubDetailLayout alias="Mass" data={String(data.mass)} />
-              <SubDetailLayout alias="Hair Color" data={data.hair_color} />
-              <SubDetailLayout alias="Skin Color" data={data.skin_color} />
-              <SubDetailLayout alias="Eye Color" data={data.eye_color} />
-              <SubDetailLayout alias="Birth Year" data={data.birth_year} />
-              <SubDetailLayout alias="Gender" data={data.gender} />
+              <SubDetailLayout alias="Species Name" data={data.name} />
+              <SubDetailLayout alias="Designation" data={data.designation} />
+              <SubDetailLayout alias="Average Height" data={String(data.average_height)} />
+              <SubDetailLayout alias="Skin Colors" data={data.skin_colors} />
+              <SubDetailLayout alias="Hair Colors" data={data.hair_colors} />
+              <SubDetailLayout alias="Eye Colors" data={data.eye_colors} />
+              <SubDetailLayout alias="Average Lifespan" data={String(data.average_lifespan)} />
+              <SubDetailLayout alias="language" data={data.language} />
               <LinkedSubDetailLayout alias="Homeworld" endpoint="planet" data={[data.homeworld]} />
+              <LinkedSubDetailLayout alias="People" endpoint="character" data={data.people} />
               <LinkedSubDetailLayout alias="Films" endpoint="film" data={data.films} />
-              <LinkedSubDetailLayout alias="Species" endpoint="species" data={data.species} />
-              <LinkedSubDetailLayout alias="Vehicles" endpoint="vehicle" data={data.vehicles} />
-              <LinkedSubDetailLayout alias="Starships" endpoint="starship" data={data.starships} />
             </div>
           </BasePage>
         </BaseLayout>
@@ -47,8 +45,8 @@ class Character extends React.Component {
   }
 }
 
-Character.propTypes = {
+Species.propTypes = {
   data: PropTypes.object,
 };
 
-export default withRouter(Character);
+export default withRouter(Species);

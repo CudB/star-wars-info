@@ -2,69 +2,51 @@ import React from 'react';
 import BaseLayout from '../components/layouts/BaseLayout';
 import LinkedSubDetailLayout from '../components/layouts/LinkedSubDetailLayout';
 import SubDetailLayout from '../components/layouts/SubDetailLayout';
+import HttpErrorLayout from '../components/layouts/HttpErrorLayout';
 import BasePage from '../components/BasePage';
 import { withRouter } from 'next/router';
-import { Link } from '../routes';
 import PropTypes from 'prop-types';
-
-import axios from 'axios';
+import getDataFromSWAPI from '../utils/getReqHelper';
 
 class Film extends React.Component {
 
+  // GET request to swapi.co for data.
   static async getInitialProps({ query }) {
-    const id = query.id;
-    let film = {};
-
-    try {
-      const response = await axios.get(`https://swapi.co/api/films/${id}`);
-      film = await response.data;
-    } catch (err) {
-      // TODO: Error handling
-      console.log(err);
-    }
-    return { film };
+    let data = await getDataFromSWAPI('films', query.id);
+    return { data };
   }
 
-  renderSubDetail(type, data) {
-    return data.map((url) => {
-      // Get ID of each sub-detail by extracting the number from it's URL.
-      const id = url.match(/[0-9]+/g);
-      return (
-        <li key={id}>
-          <Link route={`/${type}/${id}`}>
-            <a> ID {id} </a>
-          </Link>
-        </li>
-      )
-    })
-  }
-
+  // Render data if valid or error otherwise.
   render() {
-    const { film } = this.props;
-    return (
-      <BaseLayout>
-        <BasePage>
-          <div className="sub-details">
-            <h1> {film.title} </h1>
-            <SubDetailLayout type="episode_id" data={String(film.episode_id)} />
-            <SubDetailLayout type="opening_crawl" data={film.opening_crawl} />
-            <SubDetailLayout type="director" data={film.director} />
-            <SubDetailLayout type="producer" data={film.producer} />
-            <SubDetailLayout type="release_date" data={film.release_date} />
-            <LinkedSubDetailLayout type="character" data={film.characters} />
-            <LinkedSubDetailLayout type="planets" data={film.planets} />
-            <LinkedSubDetailLayout type="starships" data={film.starships} />
-            <LinkedSubDetailLayout type="vehicles" data={film.vehicles} />
-            <LinkedSubDetailLayout type="species" data={film.species} />
-          </div>
-        </BasePage>
-      </BaseLayout>
-    )
+    const { data } = this.props;
+    if (data !== null) {
+      return (
+        <BaseLayout>
+          <BasePage>
+            <div className="sub-details">
+              <h1> {data.title} </h1>
+              <SubDetailLayout alias="Episode ID" data={String(data.episode_id)} />
+              <SubDetailLayout alias="Opening Crawl" data={data.opening_crawl} />
+              <SubDetailLayout alias="Director" data={data.director} />
+              <SubDetailLayout alias="Producer" data={data.producer} />
+              <SubDetailLayout alias="Release Date" data={data.release_date} />
+              <LinkedSubDetailLayout alias="Characters" endpoint="character" data={data.characters} />
+              <LinkedSubDetailLayout alias="Planets" endpoint="planet" data={data.planets} />
+              <LinkedSubDetailLayout alias="Starships" endpoint="starship" data={data.starships} />
+              <LinkedSubDetailLayout alias="Vehicles" endpoint="vehicle" data={data.vehicles} />
+              <LinkedSubDetailLayout alias="Species" endpoint="species" data={data.species} />
+            </div>
+          </BasePage>
+        </BaseLayout>
+      )
+    } else {
+      return <HttpErrorLayout />;
+    }
   }
 }
 
 Film.propTypes = {
-  film: PropTypes.object,
+  data: PropTypes.object,
 };
 
 export default withRouter(Film);

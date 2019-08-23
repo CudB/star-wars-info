@@ -1,29 +1,24 @@
 import React from 'react';
 import BaseLayout from '../components/layouts/BaseLayout';
+import HttpErrorLayout from '../components/layouts/HttpErrorLayout';
 import BasePage from '../components/BasePage';
 import { Link } from '../routes';
 import PropTypes from 'prop-types';
+import getDataFromSWAPI from '../utils/getReqHelper';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 class Index extends React.Component {
-  static async getInitialProps() {
-    let films = [];
 
-    // Get list of Star Wars films.
-    // Return `films` as array on success or null if error caught.
-    try {
-      const response = await axios.get('https://swapi.co/api/films');
-      films = await response.data;
-    } catch (err) {
-      return { films: null };
-    }
-    return { films: films.results };
+  // GET request to swapi.co for data.
+  static async getInitialProps() {
+    const data = await getDataFromSWAPI('films');
+    return { data: data.results }
   }
 
-  // Create some html for each film listing.
-  renderFilms(films) {
-    return films.map((film) => {
+  // Create HTML element for each array element.
+  renderFilms(data) {
+    return data.map((film) => {
       // Get the films ID by extracting the number from it's URL.
       const id = film.url.match(/[0-9]+/g)
       return (
@@ -36,35 +31,28 @@ class Index extends React.Component {
     })
   }
 
-  // Render the list of films or an display an error if the GET request fails.
+  // Render data if valid or error otherwise.
   render() {
-    const { films } = this.props;
-    if (films !== null) {
+    const { data } = this.props;
+    if (data !== null) {
       return (
         <BaseLayout className="cover">
           <BasePage>
             <h1>Film List</h1>
             <ul>
-              {this.renderFilms(films)}
+              {this.renderFilms(data)}
             </ul>
           </BasePage>
         </BaseLayout>
       )
     } else {
-      return (
-        <BaseLayout className="cover">
-          <BasePage>
-            <h1>Woops</h1>
-            <p>Our ship crashed on it&apos;s way back with the film list. :(</p>
-          </BasePage>
-        </BaseLayout>
-      )
+      return <HttpErrorLayout />
     }
   }
 }
 
 Index.propTypes = {
-  films: PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default Index;
