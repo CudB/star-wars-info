@@ -1,25 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import SpinningLoaderLayout from './SpinningLoaderLayout';
 
 class SubDetailLayout extends React.Component {
   // Render a sub-detail element.
   render() {
     const { alias, data } = this.props;
-    let text = 'n/a';
-    if (data !== null) text = data;
+    let element = null;
+    if (!data) {
+      // Placeholder while data is loading.
+      element = <SpinningLoaderLayout />
+    } else {
+      // let text = 'n/a';
+      if (data !== null) element = <CardText>{data}</CardText>;
+    }
     return (
       <Row>
-        <Col md={{ size: 8, offset: 2 }}>
+        <Col>
           <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333', marginTop: '15px', padding: '0 5px' }}>
             <CardBody>
               <CardTitle>{alias}</CardTitle>
-              <CardText>{text}</CardText>
+              {element}
             </CardBody>
           </Card>
         </Col>
       </Row>
     )
+
   }
 }
 

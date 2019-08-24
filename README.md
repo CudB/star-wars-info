@@ -2,15 +2,17 @@
 
 ## Description
 
-This is a info viewer that lets you browse details about the Star Wars movies. The data is optained from [SWAPI](https://swapi.co).
+This is an info viewer that lets you browse movie data from the Star Wars franchise. All data is optained from [SWAPI](https://swapi.co).
 
 ## Try the application online
 
-// TODO Heroku link here 
+[https://swapi-browser.herokuapp.com/]
 
-## How to run the application locally
+## Run the application locally
 
-* Clone or download repo and extract the zip if you downloaded it
-* Use the command `npm install` in the root directory to get all the required packages
-* Use the command `npm run dev` to run the application in a dev environment
-* Go to localhost:3000 in your favourite browser
+```
+$ git clone git@github.com:CudB/star-wars-info.git
+$ cd star-wars-info
+$ npm install
+$ npm start
+```

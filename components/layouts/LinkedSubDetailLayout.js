@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '../../routes';
+import SpinningLoaderLayout from './SpinningLoaderLayout';
 import { Row, Col, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class LinkedSubDetailLayout extends React.Component {
@@ -41,24 +42,30 @@ class LinkedSubDetailLayout extends React.Component {
     return null;
   }
 
-  // Render the data as a list. If there is no data, render `n/a`.
+  // Render available data as a list.
   render() {
     let { alias, endpoint, data } = this.props;
     let element = null;
-    if (data.length == 0 || data[0] === null) {
-      element = "";
-      alias = "";
-    }
-    else {
-      element = (
-        <ul>
-          {this.renderSubDetail(data, endpoint)}
-        </ul >
-      )
+
+    if (!data) {
+      // Placeholder while data is loading.
+      element = <SpinningLoaderLayout />
+    } else {
+      if (data.length == 0 || data[0] === null) {
+        // Empty array or bad data.
+        return null;
+      }
+      else {
+        element = (
+          <ul>
+            {this.renderSubDetail(data, endpoint)}
+          </ul >
+        )
+      }
     }
     return (
       <Row>
-        <Col md={{ size: 8, offset: 2 }}>
+        <Col>
           <h4>{alias}</h4>
           {element}
         </Col>

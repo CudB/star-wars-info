@@ -33,7 +33,7 @@
     "react-emotion": "^9.2.12",
     "react-toastify": "^4.4.3",
     "react-typed": "^1.0.9",
-    "reactstrap": "^6.5.0"
+    "reactstrap": "^8.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",

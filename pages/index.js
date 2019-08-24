@@ -10,53 +10,85 @@ import filterDataByString from '../utils/filterHelper';
 import { Col, Row, Input } from 'reactstrap';
 
 class Index extends React.Component {
-  constructor() {
-    super();
+  // GET request to swapi.co for data.
+  static async getInitialProps() {
+    let props = {};
+
+    // If running on server, perform Async call.
+    if (typeof window === 'undefined') {
+      const data = await getDataFromSWAPI('films');
+      if (await data !== null) {
+        props.data = await data.results;
+      } else {
+        props.error = 'Unable to fetch SWAPI data on server';
+      }
+    }
+    return props;
+  }
+
+  // Set data on page load.
+  constructor(props) {
+    super(props);
     this.state = {
-      search: ''
+      search: '',
+      data: props.data || null,
+      error: props.error || null,
     };
   }
 
-  // GET request to swapi.co for data.
-  static async getInitialProps() {
-    const data = await getDataFromSWAPI('films');
-    return { data: data.results };
+  async componentDidMount() {
+    if (this.state.data === null) {
+      const data = await getDataFromSWAPI('films');
+      if (data !== null) {
+        this.setState({
+          data: await data.results,
+          error: null
+        })
+      } else {
+        this.setState({
+          error: "Unable to fetch SWAPI data on server"
+        })
+      }
+    }
   }
 
-  // Update state
+  // Update search in state.
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0) });
   }
 
   // Render data if valid or error otherwise.
   render() {
-    const { data } = this.props;
+    const { data, error } = this.props;
 
     if (data !== null) {
       // Filter data by by looking for search field text in title and description of data.
-      let filteredData = filterDataByString(data, this.state.search);
+      let filteredData = filterDataByString(this.state.data, this.state.search);
 
       return (
         <BaseLayout>
           <BasePage>
             <Row>
-              <Col md={{ size: 8, offset: 2 }}>
+              <Col>
                 <h4>Search Filter</h4>
-                <Input placeholder="Filter by title or description! eg. Death Star" type="text" value={this.state.search} onChange={this.updateSearch.bind(this)} />
+                <Input placeholder="Filter by title or description! eg. &quot;Darth Vader&quot;"
+                  type="text" value={this.state.search} onChange={this.updateSearch.bind(this)}
+                />
               </Col>
             </Row>
-            <LinkedSubDetailLayout className="film-list" alias="Film List" endpoint="film" data={filteredData} />
+            <LinkedSubDetailLayout alias="Film List" endpoint="film" data={filteredData} />
           </BasePage>
         </BaseLayout >
       )
     } else {
-      return <HttpErrorLayout />
+      return <HttpErrorLayout error={error} />
     }
   }
 }
 
 Index.propTypes = {
   data: PropTypes.array,
+  error: PropTypes.string,
 };
 
 export default Index;
