@@ -15,7 +15,7 @@ app
       return handler(req, res);
     });
 
-    server.use(handler).listen(3000, err => {
+    server.use(handler).listen(process.env.PORT || 3000, err => {
       if (err) throw err;
       console.log('> Ready on http://localhost:3000');
     });
