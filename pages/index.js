@@ -14,7 +14,7 @@ class Index extends React.Component {
   static async getInitialProps() {
     let props = {};
 
-    // If running on server, perform Async call.
+    // If running on server, perform async call.
     if (typeof window === 'undefined') {
       const data = await getDataFromSWAPI('films');
       if (await data !== null) {
@@ -37,6 +37,7 @@ class Index extends React.Component {
   }
 
   async componentDidMount() {
+    // Try to fetch data on client.
     if (this.state.data === null) {
       const data = await getDataFromSWAPI('films');
       if (data !== null) {
@@ -64,10 +65,9 @@ class Index extends React.Component {
     if (data !== null) {
       // Filter data by by looking for search field text in title and description of data.
       let filteredData = filterDataByString(this.state.data, this.state.search);
-
       return (
         <BaseLayout>
-          <BasePage>
+          <BasePage className="film-list" >
             <Row>
               <Col>
                 <h4>Search Filter</h4>

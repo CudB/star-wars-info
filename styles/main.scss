@@ -50,3 +50,14 @@ ul {
   padding-top: 150px;
   color: white;
 }
+
+.card {
+  padding: 0px;
+  margin-top: 15px;
+}
+
+div .link div:hover {
+  background-color: #707070;
+  border-radius: .25rem;
+  cursor: pointer;
+}

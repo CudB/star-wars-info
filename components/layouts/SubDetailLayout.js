@@ -18,7 +18,7 @@ class SubDetailLayout extends React.Component {
     return (
       <Row>
         <Col>
-          <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333', marginTop: '15px', padding: '0 5px' }}>
+          <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333' }}>
             <CardBody>
               <CardTitle>{alias}</CardTitle>
               {element}

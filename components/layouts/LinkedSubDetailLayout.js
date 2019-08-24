@@ -25,16 +25,16 @@ class LinkedSubDetailLayout extends React.Component {
         }
         return (
           <li key={id}>
-            <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333', marginTop: '15px', padding: '0 5px' }}>
-              <CardBody>
-                <CardTitle>
-                  <Link route={`/${endpoint}/${id}`}>
-                    <a> {text} </a>
-                  </Link>
-                </CardTitle>
-                <CardText> {description}</CardText>
-              </CardBody>
-            </Card>
+            <Link route={`/${endpoint}/${id}`}>
+              <div className="link">
+                <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333' }}>
+                  <CardBody>
+                    <CardTitle>{text}</CardTitle>
+                    <CardText>{description}</CardText>
+                  </CardBody>
+                </Card>
+              </div>
+            </Link>
           </li>
         )
       })

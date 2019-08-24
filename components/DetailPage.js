@@ -5,6 +5,8 @@ import getDataFromSWAPI from '../utils/getReqHelper';
 class DetailPage extends React.Component {
   static async getInitialProps({ query, pathname }) {
     let props = {};
+
+    // Determine endpoint for data fetch from SWAPI.
     props.endpoint = null;
     switch (pathname) {
       case '/film':
@@ -29,7 +31,7 @@ class DetailPage extends React.Component {
         break;
     }
 
-    // If running on server, perform Async call.
+    // If running on server, perform async call.
     if (typeof window === 'undefined') {
       let args = [props.endpoint];
       if (query.id !== null) args.push(query.id);
@@ -53,10 +55,14 @@ class DetailPage extends React.Component {
   }
 
   async componentDidMount() {
+    // Try to fetch data on client.
     if (this.state.data === null) {
       let args = [this.props.endpoint];
-      if (this.props.router.query.id !== null) args.push(this.props.router.query.id);
+      if (this.props.router && this.props.router.query) {
+        if (this.props.router.query.id !== null) args.push(this.props.router.query.id);
+      }
       const data = await getDataFromSWAPI(...args);
+
 
       if (await data !== null) {
         this.setState({
