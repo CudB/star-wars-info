@@ -17,7 +17,7 @@ class Index extends React.Component {
   // GET request to swapi.co for data.
   static async getInitialProps() {
     const data = await getDataFromSWAPI('films');
-    return { data: data.results }
+    return { data: data.results };
   }
 
   // Update search
@@ -29,14 +29,14 @@ class Index extends React.Component {
   render() {
     const { data } = this.props;
 
-    // Check if searched text is contained within the title or descript (opening crawl).
-    let filteredData = data.filter((film) => {
-      const matchedTitleIndex = film.title.toLowerCase().indexOf(this.state.search.toLowerCase());
-      const matchedDescriptionIndex = film.opening_crawl.toLowerCase().indexOf(this.state.search.toLowerCase());
-      return matchedTitleIndex !== -1 || matchedDescriptionIndex !== -1;
-    });
-
     if (data !== null) {
+      // Check if searched text is contained within the title or descript (opening crawl).
+      let filteredData = data.filter((film) => {
+        const matchedTitleIndex = film.title.toLowerCase().indexOf(this.state.search.toLowerCase());
+        const matchedDescriptionIndex = film.opening_crawl.toLowerCase().indexOf(this.state.search.toLowerCase());
+        return matchedTitleIndex !== -1 || matchedDescriptionIndex !== -1;
+      });
+
       return (
         <BaseLayout>
           <BasePage>
