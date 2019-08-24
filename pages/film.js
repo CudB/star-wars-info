@@ -8,6 +8,8 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
 
+import { Col, Row } from 'reactstrap';
+
 class Film extends React.Component {
 
   // GET request to swapi.co for data.
@@ -24,7 +26,11 @@ class Film extends React.Component {
         <BaseLayout>
           <BasePage>
             <div className="sub-details">
-              <h1> {data.title} </h1>
+              <Row>
+                <Col md={{ size: 8, offset: 2 }}>
+                  <h1> {data.title} </h1>
+                </Col>
+              </Row>
               <SubDetailLayout alias="Episode ID" data={String(data.episode_id)} />
               <SubDetailLayout alias="Opening Crawl" data={data.opening_crawl} />
               <SubDetailLayout alias="Director" data={data.director} />

@@ -6,6 +6,8 @@ import BasePage from '../components/BasePage';
 import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
 
+import { Col, Row, Input } from 'reactstrap';
+
 class Index extends React.Component {
   constructor() {
     super();
@@ -32,19 +34,27 @@ class Index extends React.Component {
     if (data !== null) {
       // Check if searched text is contained within the title or descript (opening crawl).
       let filteredData = data.filter((film) => {
-        const matchedTitleIndex = film.title.toLowerCase().indexOf(this.state.search.toLowerCase());
-        const matchedDescriptionIndex = film.opening_crawl.toLowerCase().indexOf(this.state.search.toLowerCase());
-        return matchedTitleIndex !== -1 || matchedDescriptionIndex !== -1;
+        // Make all text lowercase and remove line breaks for easier comparisons.
+        const searchText = this.state.search.toLowerCase();
+        const formattedTitle = film.title.toLowerCase();
+        const formattedDescription = film.opening_crawl.toLowerCase().replace(/(\r\n|\n|\r)/gm, " ");
+
+        // Return index if text found.
+        return formattedTitle.indexOf(searchText) !== -1 || formattedDescription.indexOf(searchText) !== -1;
       });
 
       return (
         <BaseLayout>
           <BasePage>
-            <h4>Search Filter</h4>
-            <input type="text" value={this.state.search} onChange={this.updateSearch.bind(this)} />
+            <Row>
+              <Col md={{ size: 8, offset: 2 }}>
+                <h4>Search Filter</h4>
+                <Input placeholder="Filter by title or description! eg. Death Star" type="text" value={this.state.search} onChange={this.updateSearch.bind(this)} />
+              </Col>
+            </Row>
             <LinkedSubDetailLayout className="film-list" alias="Film List" endpoint="film" data={filteredData} />
           </BasePage>
-        </BaseLayout>
+        </BaseLayout >
       )
     } else {
       return <HttpErrorLayout />

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from '../../routes';
+import { Row, Col, Card, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class LinkedSubDetailLayout extends React.Component {
   // Ensure data is valid and if so, create a list element containing a URL to the detail page of each array element.
@@ -10,20 +11,29 @@ class LinkedSubDetailLayout extends React.Component {
       return data.map((item) => {
         let id = null;
         let text = null;
+        let description = null;
         // Check to see if url is nested inside of another variable.
         // Also determine the text to display.
         if (item.url) {
           id = item.url.match(/[0-9]+/g);
           text = item.title;
+          description = item.opening_crawl;
         } else {
           id = item.match(/[0-9]+/g)
           text = `ID ${id}`;
         }
         return (
           <li key={id}>
-            <Link route={`/${endpoint}/${id}`}>
-              <a> {text} </a>
-            </Link>
+            <Card body inverse style={{ backgroundColor: '#333', borderColor: '#333', marginTop: '15px', padding: '0 5px' }}>
+              <CardBody>
+                <CardTitle>
+                  <Link route={`/${endpoint}/${id}`}>
+                    <a> {text} </a>
+                  </Link>
+                </CardTitle>
+                <CardText> {description}</CardText>
+              </CardBody>
+            </Card>
           </li>
         )
       })
@@ -33,23 +43,26 @@ class LinkedSubDetailLayout extends React.Component {
 
   // Render the data as a list. If there is no data, render `n/a`.
   render() {
-    const { alias, endpoint, data } = this.props;
+    let { alias, endpoint, data } = this.props;
     let element = null;
     if (data.length == 0 || data[0] === null) {
-      element = <p>n/a</p>;
+      element = "";
+      alias = "";
     }
     else {
       element = (
         <ul>
           {this.renderSubDetail(data, endpoint)}
-        </ul>
+        </ul >
       )
     }
     return (
-      <div className="sub-detail">
-        <h4>{alias}</h4>
-        {element}
-      </div>
+      <Row>
+        <Col md={{ size: 8, offset: 2 }}>
+          <h4>{alias}</h4>
+          {element}
+        </Col>
+      </Row>
     )
   }
 }
