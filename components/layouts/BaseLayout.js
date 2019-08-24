@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../shared/Header';
+import Footer from '../shared/Footer';
 import PropTypes from 'prop-types';
 
 
@@ -14,7 +15,9 @@ const BaseLayout = (props) => {
         <div className="wrapper">
           {children}
         </div>
+        <Footer />
       </main>
+
     </div>
   )
 }

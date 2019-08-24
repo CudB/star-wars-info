@@ -8,7 +8,7 @@ const BasePage = (props) => {
   return (
     <div className={`base-page ${className}`}>
       <Container>
-        { children }
+        {children}
       </Container>
     </div>
   )

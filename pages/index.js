@@ -7,6 +7,12 @@ import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
 
 class Index extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      search: ''
+    };
+  }
 
   // GET request to swapi.co for data.
   static async getInitialProps() {
@@ -14,14 +20,29 @@ class Index extends React.Component {
     return { data: data.results }
   }
 
+  // Update search
+  updateSearch(event) {
+    this.setState({ search: event.target.value.substr(0) });
+  }
+
   // Render data if valid or error otherwise.
   render() {
     const { data } = this.props;
+
+    // Check if searched text is contained within the title or descript (opening crawl).
+    let filteredData = data.filter((film) => {
+      const matchedTitleIndex = film.title.toLowerCase().indexOf(this.state.search.toLowerCase());
+      const matchedDescriptionIndex = film.opening_crawl.toLowerCase().indexOf(this.state.search.toLowerCase());
+      return matchedTitleIndex !== -1 || matchedDescriptionIndex !== -1;
+    });
+
     if (data !== null) {
       return (
         <BaseLayout>
           <BasePage>
-            <LinkedSubDetailLayout className="film-list" alias="Film List" endpoint="film" data={data} />
+            <h4>Search Filter</h4>
+            <input type="text" value={this.state.search} onChange={this.updateSearch.bind(this)} />
+            <LinkedSubDetailLayout className="film-list" alias="Film List" endpoint="film" data={filteredData} />
           </BasePage>
         </BaseLayout>
       )

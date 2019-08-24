@@ -6,8 +6,7 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink
+  NavItem
 } from 'reactstrap';
 
 const BsNavLink = (props) => {
