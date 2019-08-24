@@ -5,6 +5,7 @@ import HttpErrorLayout from '../components/layouts/HttpErrorLayout';
 import BasePage from '../components/BasePage';
 import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
+import filterDataByString from '../utils/filterHelper';
 
 import { Col, Row, Input } from 'reactstrap';
 
@@ -22,7 +23,7 @@ class Index extends React.Component {
     return { data: data.results };
   }
 
-  // Update search
+  // Update state
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0) });
   }
@@ -32,16 +33,8 @@ class Index extends React.Component {
     const { data } = this.props;
 
     if (data !== null) {
-      // Check if searched text is contained within the title or descript (opening crawl).
-      let filteredData = data.filter((film) => {
-        // Make all text lowercase and remove line breaks for easier comparisons.
-        const searchText = this.state.search.toLowerCase();
-        const formattedTitle = film.title.toLowerCase();
-        const formattedDescription = film.opening_crawl.toLowerCase().replace(/(\r\n|\n|\r)/gm, " ");
-
-        // Return index if text found.
-        return formattedTitle.indexOf(searchText) !== -1 || formattedDescription.indexOf(searchText) !== -1;
-      });
+      // Filter data by by looking for search field text in title and description of data.
+      let filteredData = filterDataByString(data, this.state.search);
 
       return (
         <BaseLayout>
