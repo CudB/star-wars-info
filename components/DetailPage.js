@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import getDataFromSWAPI from '../utils/getReqHelper';
 
 class DetailPage extends React.Component {
-  static async getInitialProps({ query, pathname }) {
+  static async getInitialProps({ pathname }) {
     let props = {};
 
     // Determine endpoint for data fetch from SWAPI.
@@ -31,18 +31,6 @@ class DetailPage extends React.Component {
         break;
     }
 
-    // If running on server, perform async call.
-    if (typeof window === 'undefined') {
-      let args = [props.endpoint];
-      if (query.id !== null) args.push(query.id);
-      const data = await getDataFromSWAPI(...args);
-
-      if (await data !== null) {
-        props.data = await data;
-      } else {
-        props.error = 'Unable to fetch SWAPI data on server';
-      }
-    }
     return props;
   }
 

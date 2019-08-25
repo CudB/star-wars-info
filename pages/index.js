@@ -10,22 +10,6 @@ import filterDataByString from '../utils/filterHelper';
 import { Col, Row, Input } from 'reactstrap';
 
 class Index extends React.Component {
-  // GET request to swapi.co for data.
-  static async getInitialProps() {
-    let props = {};
-
-    // If running on server, perform async call.
-    if (typeof window === 'undefined') {
-      const data = await getDataFromSWAPI('films');
-      if (await data !== null) {
-        props.data = await data.results;
-      } else {
-        props.error = 'Unable to fetch SWAPI data on server';
-      }
-    }
-    return props;
-  }
-
   // Set data on page load.
   constructor(props) {
     super(props);
