@@ -6,7 +6,7 @@ This is an info viewer that lets you browse movie data from the Star Wars franch
 
 ## Try the application online
 
-[https://swapi-browser.herokuapp.com/]
+https://swapi-browser.herokuapp.com/
 
 ## Run the application locally
 
